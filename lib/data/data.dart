@@ -17,7 +17,7 @@ class TagContent {
   String content;
   String uid;
 
-  TagContent({required this.id, required this.content, required this.uid});
+  TagContent({required this.id, this.title, required this.content, required this.uid});
 }
 
 List<TagContent> listTagContent = [];

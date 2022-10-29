@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:memo_me/constant.dart';
+import 'package:memo_me/data/data.dart';
 import 'package:memo_me/page/addnote.dart';
 import 'package:memo_me/page/calendar.dart';
 import 'package:memo_me/page/home.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: appTitle,
       initialRoute: home,
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
         home: (context) => const HomePage(),
         settings : (context) => const SettingPage(),
         calendar : (context) => const CalendarPage(),
-        addnote : (context) => const AddNotePage(),
+        addnote : (context) => AddNotePage(),
       },
     );
   }

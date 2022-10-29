@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:memo_me/data/data.dart';
@@ -13,13 +15,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final TextEditingController _controller = TextEditingController();
 
-  List _list = listTagContent;
+  List _list = [];
   String uid = "";
 
   void initState() {
     // TODO: implement initState
     super.initState();
     initialization();
+    refreshBodyContent();
   }
 
   @override
@@ -105,7 +108,9 @@ class _HomePageState extends State<HomePage> {
           switch (routeName) {
             case "refresh":
               setState(() {
-                _list = listTagContent;
+                _list = listTagContent
+                    .where((element) => element.uid == uid)
+                    .toList();
               });
               break;
             case "/calendar":
@@ -125,7 +130,16 @@ class _HomePageState extends State<HomePage> {
             heroTag: addnote,
             child: const Icon(Icons.add, size: 38),
             onPressed: () {
-              navigateToPage(context, addnote);
+              if (uid == "") {
+              } else {
+                Tag tag = getTag(uid);
+                Navigator.of(context).pushNamed(addnote,
+                    arguments:
+                        Tag(id: tag.id, 
+                        tag: tag.tag, 
+                        uniqueId: tag.uniqueId)
+                        ).then((value) => refreshBodyContent());
+              }
             }),
       ),
     );
@@ -155,7 +169,6 @@ class _HomePageState extends State<HomePage> {
             onTap: () {
               setState(() {
                 uid = listTag[index].uniqueId;
-                print(uid);
                 refreshBodyContent();
                 popPage(context);
               });
@@ -234,7 +247,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  child: Text(getNameTag(uid)),
+                  child: Text(getTag(uid).tag),
                 ),
                 Expanded(
                   child: Container(
@@ -257,7 +270,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-          ): Center(
+          )
+        : Center(
             child: Text("Please select tag"),
           );
   }
