@@ -89,16 +89,17 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          fab(Icons.calendar_month, calendar),
+          fab(Icons.calendar_month, calendar, calendar),
           centerfab(),
-          fab(Icons.refresh, refresh),
+          fab(Icons.refresh, refresh, refresh),
         ],
       ),
     );
   }
 
-  Widget fab(IconData iconData, String routeName) {
+  Widget fab(IconData iconData, String routeName, String _heroTag) {
     return FloatingActionButton(
+        heroTag: _heroTag,
         backgroundColor: white,
         child: Icon(iconData, color: black),
         onPressed: () {
@@ -122,7 +123,11 @@ class _HomePageState extends State<HomePage> {
       width: 72,
       child: FittedBox(
         child: FloatingActionButton(
-            child: const Icon(Icons.add, size: 38), onPressed: () {}),
+            heroTag: addnote,
+            child: const Icon(Icons.add, size: 38),
+            onPressed: () {
+              Navigator.of(context).pushNamed(addnote);
+            }),
       ),
     );
   }

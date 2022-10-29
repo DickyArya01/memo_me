@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:memo_me/constant.dart';
+import 'package:memo_me/page/addnote.dart';
 import 'package:memo_me/page/calendar.dart';
 import 'package:memo_me/page/home.dart';
 import 'package:memo_me/page/settings.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         home: (context) => const HomePage(),
         settings : (context) => const SettingPage(),
         calendar : (context) => const CalendarPage(),
+        addnote : (context) => const AddNotePage(),
       },
     );
   }

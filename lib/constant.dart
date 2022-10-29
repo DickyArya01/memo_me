@@ -9,11 +9,13 @@ String appTitle = 'memo me';
 String home = '/';
 String settings = '/settings';
 String calendar = '/calendar';
-String refresh = "refresh";
+String addnote = '/addnote';
 
 //constant value
 String addTagText = "Tambah Tag";
 String addTagHintText = "Masukkan Tag baru";
+String addNoteTitle = "Tambahkan Note";
+String refresh = "refresh";
 
 String uidIndexZero = listTag[0].uniqueId;
 
