@@ -126,7 +126,7 @@ class _HomePageState extends State<HomePage> {
             heroTag: addnote,
             child: const Icon(Icons.add, size: 38),
             onPressed: () {
-              Navigator.of(context).pushNamed(addnote);
+              navigateToPage(context, addnote);
             }),
       ),
     );
@@ -158,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                 uid = listTag[index].uniqueId;
                 print(uid);
                 refreshBodyContent();
-                Navigator.of(context).pop();
+                popPage(context);
               });
             },
           );

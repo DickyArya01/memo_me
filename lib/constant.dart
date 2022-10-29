@@ -19,6 +19,10 @@ String refresh = "refresh";
 
 String uidIndexZero = listTag[0].uniqueId;
 
+void navigateToPage(BuildContext context, String routeName) {
+  Navigator.of(context).pushNamed(routeName);
+}
+
 void popPage(BuildContext context) {
   Navigator.of(context).pop();
 }
