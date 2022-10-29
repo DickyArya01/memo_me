@@ -17,10 +17,16 @@ class _AddNotePageState extends State<AddNotePage> {
       appBar: AppBar(
         title: Text(addNoteTitle),
         leading: IconButton(
-          onPressed: () => popPage(context), icon: const Icon(Icons.close)),
+            onPressed: () => popPage(context), icon: const Icon(Icons.close)),
         actions: [
-          ElevatedButton(
-            onPressed: () => popPage(context), child: Container())
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: ElevatedButton(
+                onPressed: () => popPage(context),
+                child: Container(
+                  child: Text("Save"),
+                )),
+          )
         ],
       ),
     );
