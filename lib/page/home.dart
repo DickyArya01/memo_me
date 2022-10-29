@@ -13,6 +13,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final TextEditingController _controller = TextEditingController();
 
+  List _list = listTagContent;
+  late String uid;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -33,6 +36,8 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: drawerView(),
       body: bodyView(),
+      floatingActionButton: actionButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -45,40 +50,118 @@ class _HomePageState extends State<HomePage> {
             DrawerHeader(
               child: Text("Drawer Header"),
             ),
-            addTag(),
-            listTag(),
+            addTagFun(),
+            listOfTag(),
           ],
         ),
       ),
     );
   }
 
-  Widget listTag() {
+  void refreshBodyContent() {
+    var listTemp =
+        listTagContent.where((element) => element.uid == uid).toList();
+
+    setState(() {
+      _list = listTemp;
+    });
+  }
+
+  void submitTag(String tag) {
+    bool isDuplicate;
+
+    String uid = randomNumber();
+
+    for (var element in listTag) {
+      if (element.uniqueId == randomNumber()) {
+        isDuplicate = true;
+        uid = randomNumber();
+      }
+    }
+
+    listTag.add(Tag(id: 1, tag: tag, uniqueId: uid));
+  }
+
+  Widget actionButton() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          fab(Icons.calendar_month, calendar),
+          centerfab(),
+          fab(Icons.refresh, refresh),
+        ],
+      ),
+    );
+  }
+
+  Widget fab(IconData iconData, String routeName) {
+    return FloatingActionButton(
+        backgroundColor: white,
+        child: Icon(iconData, color: black),
+        onPressed: () {
+          switch (routeName) {
+            case "refresh":
+              setState(() {
+                _list = listTagContent;
+              });
+              break;
+            case "/calendar":
+              Navigator.of(context).pushNamed(routeName);
+              break;
+            default:
+          }
+        });
+  }
+
+  Widget centerfab() {
+    return SizedBox(
+      height: 72,
+      width: 72,
+      child: FittedBox(
+        child: FloatingActionButton(
+            child: const Icon(Icons.add, size: 38), onPressed: () {}),
+      ),
+    );
+  }
+
+  Widget listOfTag() {
     return Expanded(
       child: ListView.builder(
         padding: const EdgeInsets.only(top: 8),
-        itemCount: list.length,
+        itemCount: listTag.length,
         itemBuilder: (context, index) {
-          return Container(
-            margin: const EdgeInsets.only(right: 8, bottom: 8),
-            padding: const EdgeInsets.only(left: 16),
-            height: 48,
-            child: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(Icons.bookmark),
-                ),
-                Text(list[index].tag)
-              ],
+          return GestureDetector(
+            child: Container(
+              margin: const EdgeInsets.only(right: 8, bottom: 8),
+              padding: const EdgeInsets.only(left: 16),
+              height: 48,
+              child: Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(Icons.bookmark),
+                  ),
+                  Text(listTag[index].tag)
+                ],
+              ),
             ),
+            onTap: () {
+              setState(() {
+                uid = listTag[index].uniqueId;
+                print(uid);
+                refreshBodyContent();
+              });
+            },
           );
         },
       ),
     );
   }
 
-  Widget addTag() {
+  Widget addTagFun() {
     return Column(
       children: [
         Container(
@@ -114,12 +197,14 @@ class _HomePageState extends State<HomePage> {
                                     decoration: InputDecoration(
                                         hintText: addTagHintText),
                                     onSubmitted: (value) {
-                                      submitTag(value, "1");
+                                      submitTag(value);
+                                      Navigator.of(context).pop();
                                     },
                                   ),
                                   ElevatedButton(
                                       onPressed: () {
-                                        submitTag(_controller.text, "1");
+                                        submitTag(_controller.text);
+                                        Navigator.of(context).pop();
                                       },
                                       child: Text("Add tag"))
                                 ],
@@ -137,13 +222,50 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void submitTag(String tag, String uniqueId) {
-    Tag newTag = Tag(id: 1, tag: tag, uniqueId: uniqueId);
-    list.add(newTag);
+  Widget bodyView() {
+    return Container(
+      child: ListView.builder(
+        itemCount: _list.length,
+        itemBuilder: (context, index) {
+          return Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                dateView(),
+                titleView(),
+                contentView(),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 
-  Widget bodyView() {
-    return Container();
+  Widget dateView() {
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: const EdgeInsets.only(left: 16, bottom: 8, right: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [Text("Date Month"), Text("xx.xx")],
+      ),
+    );
+  }
+
+  Widget titleView() {
+    return Container(
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.only(left: 16, bottom: 8),
+        child: (true) ? Text("title") : Text(""));
+  }
+
+  Widget contentView() {
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: const EdgeInsets.only(left: 16, bottom: 8),
+      child: Text("content"),
+    );
   }
 
   void initialization() async {
