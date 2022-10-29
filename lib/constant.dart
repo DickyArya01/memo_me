@@ -19,6 +19,13 @@ String refresh = "refresh";
 
 String uidIndexZero = listTag[0].uniqueId;
 
+String getNameTag(String uid) {
+  List<Tag> listTagbyUid =
+      listTag.where((element) => element.uniqueId == uid).toList();
+
+  return listTagbyUid[0].tag;
+}
+
 void navigateToPage(BuildContext context, String routeName) {
   Navigator.of(context).pushNamed(routeName);
 }

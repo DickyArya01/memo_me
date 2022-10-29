@@ -16,7 +16,6 @@ class _HomePageState extends State<HomePage> {
   List _list = listTagContent;
   String uid = "";
 
-  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -231,23 +230,34 @@ class _HomePageState extends State<HomePage> {
   Widget bodyView() {
     return (uid != "")
         ? Container(
-            child: ListView.builder(
-              itemCount: _list.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      dateView(),
-                      titleView(),
-                      contentView(),
-                    ],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  child: Text(getNameTag(uid)),
+                ),
+                Expanded(
+                  child: Container(
+                    child: ListView.builder(
+                      itemCount: _list.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              dateView(),
+                              titleView(),
+                              contentView(),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                );
-              },
+                ),
+              ],
             ),
-          )
-        : Center(
+          ): Center(
             child: Text("Please select tag"),
           );
   }

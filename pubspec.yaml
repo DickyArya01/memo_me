@@ -29,6 +29,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  fluttertoast: ^8.1.1
   flutter_native_splash: ^2.2.12
   sqflite: ^2.2.0+2
   intl: ^0.17.0

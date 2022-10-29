@@ -8,8 +8,8 @@ class Tag {
   Tag({required this.id, required this.tag, required this.uniqueId});
 }
 
-List<Tag> listTag = [
-];
+List<Tag> listTag = [];
+
 
 class TagContent {
   int id;
@@ -20,5 +20,4 @@ class TagContent {
   TagContent({required this.id, required this.content, required this.uid});
 }
 
-List<TagContent> listTagContent = [
-];
+List<TagContent> listTagContent = [];
