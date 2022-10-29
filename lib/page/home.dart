@@ -14,7 +14,7 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _controller = TextEditingController();
 
   List _list = listTagContent;
-  late String uid;
+  String uid = "";
 
   @override
   void initState() {
@@ -153,6 +153,7 @@ class _HomePageState extends State<HomePage> {
                 uid = listTag[index].uniqueId;
                 print(uid);
                 refreshBodyContent();
+                Navigator.of(context).pop();
               });
             },
           );
@@ -223,23 +224,27 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget bodyView() {
-    return Container(
-      child: ListView.builder(
-        itemCount: _list.length,
-        itemBuilder: (context, index) {
-          return Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                dateView(),
-                titleView(),
-                contentView(),
-              ],
+    return (uid != "")
+        ? Container(
+            child: ListView.builder(
+              itemCount: _list.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      dateView(),
+                      titleView(),
+                      contentView(),
+                    ],
+                  ),
+                );
+              },
             ),
+          )
+        : Center(
+            child: Text("Please select tag"),
           );
-        },
-      ),
-    );
   }
 
   Widget dateView() {

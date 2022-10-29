@@ -9,8 +9,6 @@ class Tag {
 }
 
 List<Tag> listTag = [
-  Tag(id: 1, tag: "Daily Chores 1", uniqueId: "111"),
-  Tag(id: 2, tag: "Daily Chores 2", uniqueId: "222")
 ];
 
 class TagContent {
@@ -23,8 +21,4 @@ class TagContent {
 }
 
 List<TagContent> listTagContent = [
-  TagContent(id: 1, content: "anjay", uid: "111"),
-  TagContent(id: 1, content: "anjay", uid: "111"),
-  TagContent(id: 2, content: "cok", uid: "222"),
-  TagContent(id: 1, content: "anjay", uid: "111"),
 ];
