@@ -19,6 +19,10 @@ String refresh = "refresh";
 
 String uidIndexZero = listTag[0].uniqueId;
 
+void popPage(BuildContext context) {
+  Navigator.of(context).pop();
+}
+
 String randomNumber() {
   Random random = Random();
 
