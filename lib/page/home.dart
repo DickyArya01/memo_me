@@ -127,13 +127,13 @@ class _HomePageState extends State<HomePage> {
       width: 72,
       child: FittedBox(
         child: FloatingActionButton(
-            heroTag: addnote,
+            heroTag: note,
             child: const Icon(Icons.add, size: 38),
             onPressed: () {
               if (uid == "") {
               } else {
                 Tag tag = getTag(uid);
-                Navigator.of(context).pushNamed(addnote,
+                Navigator.of(context).pushNamed(editnote,
                     arguments:
                         Tag(id: tag.id, 
                         tag: tag.tag, 

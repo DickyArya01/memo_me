@@ -4,14 +4,14 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:memo_me/constant.dart';
 import 'package:memo_me/data/data.dart';
 
-class AddNotePage extends StatefulWidget {
-  const AddNotePage({super.key});
+class EditNotePage extends StatefulWidget {
+  const EditNotePage({super.key});
 
   @override
-  State<AddNotePage> createState() => _AddNotePageState();
+  State<EditNotePage> createState() => _EditNotePageState();
 }
 
-class _AddNotePageState extends State<AddNotePage> {
+class _EditNotePageState extends State<EditNotePage> {
   TextEditingController titleTextController = TextEditingController();
   TextEditingController contentTextController = TextEditingController();
 
@@ -20,7 +20,7 @@ class _AddNotePageState extends State<AddNotePage> {
     final args = ModalRoute.of(context)!.settings.arguments as Tag;
     return Scaffold(
       appBar: AppBar(
-        title: Text(addNoteTitle),
+        title: Text(edit),
         leading: IconButton(
             onPressed: () => popPage(context), icon: const Icon(Icons.close)),
         actions: [
@@ -28,11 +28,6 @@ class _AddNotePageState extends State<AddNotePage> {
             padding: const EdgeInsets.all(8),
             child: ElevatedButton(
                 onPressed: () {
-                  listTagContent.add(TagContent(
-                      id: 1,
-                      title: titleTextController.text,
-                      content: contentTextController.text,
-                      uid: args.uniqueId));
                   popPage(context);
                 },
                 child: Container(
@@ -50,5 +45,6 @@ class _AddNotePageState extends State<AddNotePage> {
         ),
       ]),
     );
+
   }
 }

@@ -9,12 +9,13 @@ String appTitle = 'memo me';
 String home = '/';
 String settings = '/settings';
 String calendar = '/calendar';
-String addnote = '/addnote';
+String note = '/note';
+String editnote = '/editnote';
 
 //constant value
 String addTagText = "Tambah Tag";
 String addTagHintText = "Masukkan Tag baru";
-String addNoteTitle = "Tambahkan Note";
+String edit = "Edit";
 String refresh = "refresh";
 
 String uidIndexZero = listTag[0].uniqueId;
@@ -26,8 +27,8 @@ Tag getTag(String uid) {
   return listTagbyUid[0];
 }
 
-void navigateToPageWithUid(BuildContext context, String routeName, Tag tag) {
-  Navigator.of(context).pushNamed(routeName, arguments: Tag(id: tag.id, tag: tag.tag, uniqueId: tag.uniqueId));
+void navigateToPageWithTagContent(BuildContext context, String routeName, TagContent content) {
+  Navigator.of(context).pushNamed(routeName, arguments: TagContent(id: content.id, content: content.content, uid: content.uid));
 }
 
 void popPage(BuildContext context) {
