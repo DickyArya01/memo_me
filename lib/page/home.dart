@@ -2,8 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:intl/intl.dart';
 import 'package:memo_me/data/data.dart';
 import 'package:memo_me/constant.dart';
+import 'package:memo_me/database/memo_database.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,6 +17,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final TextEditingController _controller = TextEditingController();
 
+  DateFormat dateFormat = DateFormat('d-MM-yyyy');
+  DateFormat timeFormat = DateFormat.Hm();
+
   List _list = [];
   String uid = "";
 
@@ -22,7 +27,8 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
     initialization();
-    refreshBodyContent();
+    refreshTag();
+    refreshTagContent();
   }
 
   @override
@@ -60,8 +66,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void refreshBodyContent() {
-    var listTemp =
+  Future refreshTagContent() async {
+    listTagContent = await MemoDatabase.instance.readAllTagContent();
+
+    List listTemp =
         listTagContent.where((element) => element.uid == uid).toList();
 
     setState(() {
@@ -69,7 +77,14 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void submitTag(String tag) {
+  Future refreshTag() async {
+    List<Tag> listTemp = await MemoDatabase.instance.readAllTag();
+    setState(() {
+      listTag = listTemp;
+    });
+  }
+
+  Future submitTag(String tag) async {
     bool isDuplicate;
 
     String uid = randomNumber();
@@ -81,7 +96,8 @@ class _HomePageState extends State<HomePage> {
       }
     }
 
-    listTag.add(Tag(id: 1, tag: tag, uid : uid));
+    await MemoDatabase.instance.insertTag(Tag(tag: tag, uid: uid));
+    refreshTag();
   }
 
   Widget actionButton() {
@@ -133,12 +149,10 @@ class _HomePageState extends State<HomePage> {
               if (uid == "") {
               } else {
                 Tag tag = getTag(uid);
-                Navigator.of(context).pushNamed(editnote,
-                    arguments:
-                        Tag(id: tag.id, 
-                        tag: tag.tag, 
-                        uid: tag.uid)
-                        ).then((value) => refreshBodyContent());
+                Navigator.of(context)
+                    .pushNamed(editnote,
+                        arguments: Tag(id: tag.id, tag: tag.tag, uid: tag.uid))
+                    .then((value) => refreshTagContent());
               }
             }),
       ),
@@ -169,7 +183,7 @@ class _HomePageState extends State<HomePage> {
             onTap: () {
               setState(() {
                 uid = listTag[index].uid;
-                refreshBodyContent();
+                refreshTagContent();
                 popPage(context);
               });
             },
@@ -258,9 +272,9 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              dateView(),
-                              titleView(),
-                              contentView(),
+                              dateView(_list[index]),
+                              titleView(_list[index]),
+                              remindAtView(_list[index]),
                             ],
                           ),
                         );
@@ -276,34 +290,47 @@ class _HomePageState extends State<HomePage> {
           );
   }
 
-  Widget dateView() {
+  Widget dateView(TagContent tagContent) {
     return Container(
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.only(left: 16, bottom: 8, right: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [Text("Date Month"), Text("xx.xx")],
+        children: [
+          Text(formatedDate(tagContent.createdTime)),
+          Text(formatedTime(tagContent.createdTime))
+        ],
       ),
     );
   }
 
-  Widget titleView() {
+  Widget titleView(TagContent tagContent) {
     return Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.only(left: 16, bottom: 8),
-        child: (true) ? Text("title") : Text(""));
+        child:
+            (tagContent.title != "") ? Text(tagContent.title) : Text("title"));
   }
 
-  Widget contentView() {
+  Widget remindAtView(TagContent tagContent) {
     return Container(
-      alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.only(left: 16, bottom: 8),
-      child: Text("content"),
-    );
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.only(left: 16, bottom: 8),
+        child: Text("Set Alarm on ${formatedDate(tagContent.reminderTime)} ${formatedTime(tagContent.reminderTime)}"));
   }
 
   void initialization() async {
     await Future.delayed(const Duration(milliseconds: 60));
     FlutterNativeSplash.remove();
+  }
+
+  String formatedDate(DateTime dateTime) {
+    String res = dateFormat.format(dateTime);
+    return res;
+  }
+
+  String formatedTime(DateTime dateTime) {
+    String res = timeFormat.format(dateTime);
+    return res;
   }
 }
