@@ -75,13 +75,13 @@ class _HomePageState extends State<HomePage> {
     String uid = randomNumber();
 
     for (var element in listTag) {
-      if (element.uniqueId == randomNumber()) {
+      if (element.uid == randomNumber()) {
         isDuplicate = true;
         uid = randomNumber();
       }
     }
 
-    listTag.add(Tag(id: 1, tag: tag, uniqueId: uid));
+    listTag.add(Tag(id: 1, tag: tag, uid : uid));
   }
 
   Widget actionButton() {
@@ -137,7 +137,7 @@ class _HomePageState extends State<HomePage> {
                     arguments:
                         Tag(id: tag.id, 
                         tag: tag.tag, 
-                        uniqueId: tag.uniqueId)
+                        uid: tag.uid)
                         ).then((value) => refreshBodyContent());
               }
             }),
@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage> {
             ),
             onTap: () {
               setState(() {
-                uid = listTag[index].uniqueId;
+                uid = listTag[index].uid;
                 refreshBodyContent();
                 popPage(context);
               });

@@ -18,17 +18,15 @@ String addTagHintText = "Masukkan Tag baru";
 String edit = "Edit";
 String refresh = "refresh";
 
-String uidIndexZero = listTag[0].uniqueId;
-
 Tag getTag(String uid) {
   List<Tag> listTagbyUid =
-      listTag.where((element) => element.uniqueId == uid).toList();
+      listTag.where((element) => element.uid == uid).toList();
 
   return listTagbyUid[0];
 }
 
 void navigateToPageWithTagContent(BuildContext context, String routeName, TagContent content) {
-  Navigator.of(context).pushNamed(routeName, arguments: TagContent(id: content.id, content: content.content, uid: content.uid));
+  Navigator.of(context).pushNamed(routeName, arguments: TagContent(title: content.title, content: content.content, createdTime: content.createdTime, reminderTime: content.reminderTime, uid: content.uid));
 }
 
 void popPage(BuildContext context) {
