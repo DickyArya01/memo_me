@@ -17,6 +17,7 @@ String addTagText = "Tambah Tag";
 String addTagHintText = "Masukkan Tag baru";
 String edit = "Edit";
 String refresh = "refresh";
+String noTagSelected = "Please select tag on drawer first";
 
 Tag getTag(String uid) {
   List<Tag> listTagbyUid =
@@ -25,8 +26,15 @@ Tag getTag(String uid) {
   return listTagbyUid[0];
 }
 
-void navigateToPageWithTagContent(BuildContext context, String routeName, TagContent content) {
-  Navigator.of(context).pushNamed(routeName, arguments: TagContent(title: content.title, content: content.content, createdTime: content.createdTime, reminderTime: content.reminderTime, uid: content.uid));
+void navigateToPageWithTagContent(
+    BuildContext context, String routeName, TagContent content) {
+  Navigator.of(context).pushNamed(routeName,
+      arguments: TagContent(
+          title: content.title,
+          content: content.content,
+          createdTime: content.createdTime,
+          reminderTime: content.reminderTime,
+          uid: content.uid));
 }
 
 void popPage(BuildContext context) {

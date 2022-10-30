@@ -21,14 +21,15 @@ class _HomePageState extends State<HomePage> {
   DateFormat timeFormat = DateFormat.Hm();
 
   List _list = [];
+  List _listAll = [];
   String uid = "";
 
   void initState() {
     // TODO: implement initState
-    super.initState();
     initialization();
     refreshTag();
     refreshTagContent();
+    super.initState();
   }
 
   @override
@@ -286,7 +287,7 @@ class _HomePageState extends State<HomePage> {
             ),
           )
         : Center(
-            child: Text("Please select tag"),
+            child: Text(noTagSelected),
           );
   }
 
@@ -316,7 +317,8 @@ class _HomePageState extends State<HomePage> {
     return Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.only(left: 16, bottom: 8),
-        child: Text("Set Alarm on ${formatedDate(tagContent.reminderTime)} ${formatedTime(tagContent.reminderTime)}"));
+        child: Text(
+            "Set Alarm on ${formatedDate(tagContent.reminderTime)} ${formatedTime(tagContent.reminderTime)}"));
   }
 
   void initialization() async {
