@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:memo_me/data/data.dart';
 import 'package:memo_me/constant.dart';
 import 'package:memo_me/database/memo_database.dart';
+import 'package:memo_me/page/notification/notificationApi.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,8 +25,12 @@ class _HomePageState extends State<HomePage> {
   List _listAll = [];
   String uid = "";
 
+  late final LocalNotificationService service;
+
   void initState() {
     // TODO: implement initState
+    service = LocalNotificationService();
+    service.initialize();
     initialization();
     refreshTag();
     refreshTagContent();
@@ -146,8 +151,10 @@ class _HomePageState extends State<HomePage> {
         child: FloatingActionButton(
             heroTag: note,
             child: const Icon(Icons.add, size: 38),
-            onPressed: () {
+            onPressed: () async {
               if (uid == "") {
+                await service.showNotification(
+                    id: 0, title: "Notification Title", body: "Some context");
               } else {
                 Tag tag = getTag(uid);
                 Navigator.of(context)
@@ -309,8 +316,7 @@ class _HomePageState extends State<HomePage> {
     return Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.only(left: 16, bottom: 8),
-        child:
-            (tagContent.title != "") ? Text(tagContent.title) : Text("title"));
+        child: Text(tagContent.title) );
   }
 
   Widget remindAtView(TagContent tagContent) {
